@@ -73,13 +73,14 @@ void Game::PlaceFood() {
 void Game::Update() {
   if (!snake.alive) return;
 
-  snake.Update();
   if(snake.directionChange)
   {
      movingObstacle.direction = GetRandomDirection();
      snake.directionChange = false;
   }
   movingObstacle.Update();
+  snake.Update();
+  checkForCollision(snake, movingObstacle);
 
   int new_x = static_cast<int>(*snake.head_x);
   int new_y = static_cast<int>(*snake.head_y);
@@ -125,3 +126,17 @@ Snake::Direction Game::GetRandomDirection()
   }
   return direction;
 };
+
+// Check if the snake has died (on moving obstacle).
+void Game::checkForCollision(Snake &snake, Snake &movingObstacle)
+{
+  int head_x = static_cast<int>(*snake.head_x);
+  int head_y = static_cast<int>(*snake.head_y);
+  
+  for (auto const &item : movingObstacle.body) {
+    if (head_x == (*item).x && head_y == (*item).y) {
+      snake.alive = false;
+      std::cout << "Snake alive: " << snake.alive << std::endl;
+    }
+  }
+}

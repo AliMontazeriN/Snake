@@ -63,7 +63,7 @@ void Snake::UpdateBody(std::shared_ptr<SDL_Point> &&current_head_cell, std::shar
     size++;
   }
 
-  // Check if the snake has died.
+  // Check if the snake has died (on his own body).
   for (auto const &item : body) {
     if ((*current_head_cell).x == (*item).x && (*current_head_cell).y == (*item).y) {
       alive = false;

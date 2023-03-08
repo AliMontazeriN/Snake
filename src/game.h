@@ -32,6 +32,8 @@ class Game {
   void PlaceFood();
   void Update();
   Snake::Direction GetRandomDirection();
+  void checkForCollision(Snake &snake, Snake &movingObstacle);
+
 };
 
 #endif
