@@ -38,6 +38,26 @@ class Snake {
     return *this;
   }
 
+  Snake (const Snake &&source) //move constructor
+  {
+    head_x = std::make_unique<float>(*source.head_x);
+    head_y = std::make_unique<float>(*source.head_y);
+    body = source.body;
+
+  };
+
+  Snake &operator=(const Snake &&source) //move assignment operator
+  {
+    if(this == &source)
+      return *this;
+    
+    head_x = std::make_unique<float>(*source.head_x);
+    head_y = std::make_unique<float>(*source.head_y);
+    body = source.body;
+
+    return *this;
+  }
+
   void Update();
 
   void GrowBody();

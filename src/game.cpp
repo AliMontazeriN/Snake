@@ -132,11 +132,11 @@ void Game::checkForCollision(Snake &snake, Snake &movingObstacle)
 {
   int head_x = static_cast<int>(*snake.head_x);
   int head_y = static_cast<int>(*snake.head_y);
-  
+
   for (auto const &item : movingObstacle.body) {
     if (head_x == (*item).x && head_y == (*item).y) {
       snake.alive = false;
-      std::cout << "Snake alive: " << snake.alive << std::endl;
+      std::cout << "Snake died!" << std::endl;
     }
   }
 }
