@@ -44,3 +44,25 @@ This work is licensed under a
 [cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
 [cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+
+
+## Game features
+1. A controable moving snake eating food.
+2. Once the snake easts food, it grows in length and its speed inreases.
+3. A moving obstacle randomly changing his direction as soon as the snake changes its direction.
+4. The moving obstacle grows in length and increases its speed every time the snake eats food.
+5. Once the snake's head hits any part of moving obstacle's body, the snake dies and the game is over.
+
+
+## Rubic Points:
+* Loops functions I/O: e.g.: Game::checkForCollision, Game::GetRandomDirection
+* Object Oriented Programming Techniques: movingObstacle instance
+* Appropriate access specifiers for class members: Snake class and movingObstacle instance
+* Member initialization list in class constructor: initializing head_x and head_y as shared pointers in class snake
+* Classes encapsulate behavior: private member variables are accessed via member functions
+* Using references in function declatation: Game::checkForCollision
+* Rule of five: snake.h 
+* Smart pointers: shared pointers in snake.h for head and body
+* Using move semantics to move data instead of copying it: Snake::UpdateBody
+* Using two threads (main and game). The game thread is instantiated in main
+* Using promise-future channel to send massage from working thread to parent thread (see end of Game::Run method)
