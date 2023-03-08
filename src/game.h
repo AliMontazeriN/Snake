@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <thread>
+#include <future>
 #include <random>
 #include "SDL.h"
 #include "controller.h"
@@ -10,8 +12,8 @@
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
-  void Run(Controller const &controller, Renderer &renderer,
-           std::size_t target_frame_duration);
+  std::thread Run(Controller &&controller, Renderer &&renderer,
+           std::size_t target_frame_duration, std::promise<bool> &&prm);
   int GetScore() const;
   int GetSize() const;
 

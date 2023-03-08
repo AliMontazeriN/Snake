@@ -15,8 +15,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
   movingObstacle.direction = Snake::Direction::kDown;
 }
 
-void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration) {
+std::thread Game::Run(Controller &&controller, Renderer &&renderer,
+               std::size_t target_frame_duration, std::promise<bool> &&prm) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -25,6 +25,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   bool running = true;
 
   while (running) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
@@ -53,6 +55,12 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  if(!running || !snake.alive)
+  {
+    prm.set_value(snake.alive);
+  }
+    //std::terminate();
+  //;
 }
 
 void Game::PlaceFood() {
