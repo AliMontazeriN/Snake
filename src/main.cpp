@@ -33,7 +33,10 @@ int main() {
   } else {
     std::cout << "According to promise-future channel, the snake is: DEAD" << std::endl;
   }
-  tGame.join();
+  if(tGame.joinable())
+  {
+    tGame.join();
+  }
   //ftr.wait();
   // game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
