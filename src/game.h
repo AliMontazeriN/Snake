@@ -17,6 +17,7 @@ class Game {
 
  private:
   Snake snake;
+  Snake movingObstacle;
   SDL_Point food;
 
   std::random_device dev;
@@ -24,10 +25,13 @@ class Game {
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
 
+  std::uniform_int_distribution<int> random_direction;
+
   int score{0};
 
   void PlaceFood();
   void Update();
+  Snake::Direction GetRandomDirection();
 };
 
 #endif

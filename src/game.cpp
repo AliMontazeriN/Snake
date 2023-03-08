@@ -4,10 +4,15 @@
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
+      movingObstacle(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)) {
+      random_h(0, static_cast<int>(grid_height - 1)),
+      random_direction(0,3) {
   PlaceFood();
+  *movingObstacle.head_x = grid_width / 4;
+  *movingObstacle.head_y = grid_height / 4;
+  movingObstacle.direction = Snake::Direction::kDown;
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -25,7 +30,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, movingObstacle);
 
     frame_end = SDL_GetTicks();
 
@@ -69,9 +74,15 @@ void Game::Update() {
   if (!snake.alive) return;
 
   snake.Update();
+  if(snake.directionChange)
+  {
+     movingObstacle.direction = GetRandomDirection();
+     snake.directionChange = false;
+  }
+  movingObstacle.Update();
 
-  int new_x = static_cast<int>(snake.head_x);
-  int new_y = static_cast<int>(snake.head_y);
+  int new_x = static_cast<int>(*snake.head_x);
+  int new_y = static_cast<int>(*snake.head_y);
 
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
@@ -80,8 +91,37 @@ void Game::Update() {
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+
+    // Grow moving obstacle and increase speed.
+    movingObstacle.GrowBody();
+    movingObstacle.speed +=0.02;
   }
 }
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+
+Snake::Direction Game::GetRandomDirection()
+{
+  Snake::Direction direction;
+  int dir = random_direction(engine);
+  switch (dir)
+  {
+  case 0:
+    direction = Snake::Direction::kUp;
+    break;
+  case 1:
+    direction = Snake::Direction::kDown;
+    break;
+  case 2:
+    direction = Snake::Direction::kLeft;
+    break;
+  case 3:
+    direction = Snake::Direction::kRight;
+    break;
+  default:
+    direction = Snake::Direction::kLeft;
+    break;
+  }
+  return direction;
+};
